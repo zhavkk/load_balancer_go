@@ -1,0 +1,16 @@
+proxy:
+  port: "8080"
+  algorithm: "round-robin"
+backends:
+  - url: "http://10.0.0.1:8000"
+  - url: "http://10.0.0.2:8000"
+rate_limit:
+  enabled: true
+  default_rps: 10      
+  default_burst: 20     
+  use_ip: true          
+db:
+  dsn: "postgres://user:pass@localhost:5432/load_balancer"
+  update_interval: "5m" 
+
+env: "local"
