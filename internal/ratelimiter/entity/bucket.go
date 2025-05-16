@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+type LimitConfig struct {
+	ClientID string
+	RPS      int
+	Burst    int
+}
+
 type TokenBucket struct {
 	capacity   int
 	tokens     int

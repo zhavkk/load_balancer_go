@@ -1,11 +1,36 @@
 package entity
 
+import (
+	"net/url"
+	"sync"
+)
+
 type Backend struct {
-	ID      string `json:"id"`
-	URL     string `json:"url"`
-	IsAlive bool
+	URL       url.URL
+	IsDead    bool
+	ActiveReq int
+	mu        sync.RWMutex
 }
 
-type BackendList struct {
-	Backends []Backend `json:"backends"`
+func (b *Backend) Inc() {
+	b.mu.Lock()
+	b.ActiveReq++
+	b.mu.Unlock()
 }
+
+func (b *Backend) Dec() {
+	b.mu.Lock()
+	if b.ActiveReq > 0 {
+		b.ActiveReq--
+	}
+	b.mu.Unlock()
+}
+
+func (b *Backend) SetDead(dead bool) {
+	b.mu.Lock()
+	b.IsDead = dead
+	b.mu.Unlock()
+}
+
+func (b *Backend) RLock()   { b.mu.RLock() }
+func (b *Backend) RUnlock() { b.mu.RUnlock() }

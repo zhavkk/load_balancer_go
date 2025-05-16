@@ -1,10 +1,10 @@
 package config
 
 import (
-	"log/slog"
 	"os"
 
 	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/zhavkk/load_balancer_go/internal/logger"
 )
 
 type Config struct {
@@ -25,10 +25,9 @@ type BackendConfig struct {
 }
 
 type RateLimitConfig struct {
-	Enabled bool `yaml:"enabled"`
+	DefaultRPS   int `yaml:"default_rps"`
+	DefaultBurst int `yaml:"default_burst"`
 }
-
-var logger *slog.Logger // to logger package
 
 type DBConfig struct {
 	DSN            string `yaml:"dsn"`
@@ -45,7 +44,7 @@ func MustLoad() *Config {
 		panic("config file does not exist")
 	}
 	if err := cleanenv.ReadConfig(configpath, &cfg); err != nil {
-		logger.Error("failed to read config", "error", err)
+		logger.Log.Error("failed to read config", "error", err)
 		os.Exit(1)
 	}
 	return &cfg
