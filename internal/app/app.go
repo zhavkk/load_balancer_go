@@ -12,7 +12,6 @@ import (
 	"time"
 
 	balentity "github.com/zhavkk/load_balancer_go/internal/balancer/entity"
-	"github.com/zhavkk/load_balancer_go/internal/balancer/httpadapter"
 	balhttp "github.com/zhavkk/load_balancer_go/internal/balancer/httpadapter"
 	balusecase "github.com/zhavkk/load_balancer_go/internal/balancer/usecase"
 	"github.com/zhavkk/load_balancer_go/internal/config"
@@ -66,10 +65,10 @@ func Setup(cfg *config.Config) (*App, error) {
 
 	var finalHandler http.Handler = proxyHandler
 	if cfg.RateLimit.Enabled {
-		finalHandler = rl.Middleware(proxyHandler).(*httpadapter.Handler)
+		finalHandler = rl.Middleware(proxyHandler)
 	}
 
-	srv := server.New(cfg.Proxy.Port, finalHandler.(*httpadapter.Handler), repo)
+	srv := server.New(cfg.Proxy.Port, finalHandler, repo)
 
 	return &App{srv: srv, storage: st}, nil
 }
