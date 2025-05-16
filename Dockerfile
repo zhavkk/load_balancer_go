@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine AS builder
+FROM golang:alpine AS builder
 
 RUN apk add --no-cache git
 
@@ -9,7 +9,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+RUN GOSUMDB=off go install github.com/pressly/goose/cmd/goose@v2.7.0
 
 RUN CGO_ENABLED=0 GOOS=linux go build \
     -ldflags="-s -w" \

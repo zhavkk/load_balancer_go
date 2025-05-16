@@ -25,8 +25,9 @@ type BackendConfig struct {
 }
 
 type RateLimitConfig struct {
-	DefaultRPS   int `yaml:"default_rps"`
-	DefaultBurst int `yaml:"default_burst"`
+	Enabled      bool `yaml:"enabled"`
+	DefaultRPS   int  `yaml:"default_rps"`
+	DefaultBurst int  `yaml:"default_burst"`
 }
 
 type DBConfig struct {

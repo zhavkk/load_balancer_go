@@ -6,7 +6,6 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/zhavkk/load_balancer_go/internal/balancer/httpadapter"
 	"github.com/zhavkk/load_balancer_go/internal/handlers/clients"
 	"github.com/zhavkk/load_balancer_go/internal/handlers/proxy"
 	rl "github.com/zhavkk/load_balancer_go/internal/ratelimiter/usecase"
@@ -14,7 +13,7 @@ import (
 
 func New(
 	port string,
-	lb *httpadapter.Handler,
+	lb http.Handler,
 	repo rl.RateLimitRepository,
 ) *http.Server {
 	r := chi.NewRouter()
