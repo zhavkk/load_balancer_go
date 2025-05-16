@@ -15,6 +15,7 @@
 ---
 
 ## Структура проекта
+```
 ├── cmd/load_balancer/ # Точка входа
 ├── config/ # Конфиг и docker-compose.yml
 ├── migrations/ # SQL-миграции Goose
@@ -22,7 +23,7 @@
 ├── Dockerfile
 ├── Makefile
 └── README.md
-
+```
 
 ---
 
