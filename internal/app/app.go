@@ -64,9 +64,12 @@ func Setup(cfg *config.Config) (*App, error) {
 
 	proxyHandler := balhttp.NewHandler(lb)
 
-	handler := rl.Middleware(proxyHandler).(*httpadapter.Handler)
+	var finalHandler http.Handler = proxyHandler
+	if cfg.RateLimit.Enabled {
+		finalHandler = rl.Middleware(proxyHandler).(*httpadapter.Handler)
+	}
 
-	srv := server.New(cfg.Proxy.Port, handler, repo)
+	srv := server.New(cfg.Proxy.Port, finalHandler.(*httpadapter.Handler), repo)
 
 	return &App{srv: srv, storage: st}, nil
 }
